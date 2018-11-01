@@ -1,0 +1,115 @@
+.bestof2018-page {
+	color: #fff;
+}
+
+.bestof2018-voting {
+  width: 100%;
+}
+
+
+.bestof2018-voting h2 {
+  margin-bottom: 0px;
+}
+
+.bestof2018-page p {
+  max-width: 75ch;
+}
+
+.bestof2018-page .top-banner {
+  color: #fff;
+}
+
+.bestof2018-page .top-banner p.gray {
+  color: #aaa;
+}
+
+.bestof2018-voting .artist-row.no-artist .favorite-song-title {
+  opacity: 0.5;
+}
+
+.bestof2018-voting .artist-row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.bestof2018-voting select {
+  width: 100%;
+  opacity: 0.9;
+  height: 30px;
+}
+
+.bestof2018-voting select[disabled] {
+  opacity: 0.5;
+}
+
+.bestof2018 .artist-row {
+  margin: 0 0 0.75rem 0;
+  padding: 1.5rem;
+/*  border: 1px solid #3c3b3b;*/
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  background-position: center
+}
+
+.bestof2018 .artist-results {
+	border-bottom: 10px solid dodgerblue;
+}
+
+.bestof2018 .ranking-box {
+	width: 75px;
+	height: 75px;
+	background: dodgerblue;
+	color: #fff;
+	margin: auto;
+	text-align: center;
+	display: table
+}
+
+.bestof2018 .ranking-box h2 {
+	display: table-cell;
+  vertical-align: middle
+}
+
+.bestof2018 .artist-row h3 {
+  color: #fff;
+  transition: all 0.5s ease 0.25s;
+  font-weight: bold;
+}
+
+.bestof2018 .artist-row .banner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: 102% auto;
+  background-repeat: no-repeat;
+  z-index: -1;
+  background-color: transparent;
+  left: 0px;
+  top: 0px;
+/*  opacity: 0;*/
+  transition: all 1s ease;
+}
+
+.bestof2018 .artist-row .banner:before {
+  content: "";
+  background: #000;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.65;
+}
+
+.bestof2018 .banner-bottom {
+	position: relative;
+}
+
+.bestof2018-voting .submit-container .button--cta {
+	padding: 1.5rem;
+	font-size: 1.25rem;
+	margin-bottom: 3rem
+}
+
