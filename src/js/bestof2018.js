@@ -217,11 +217,8 @@ function clickSubmitBestOf2018 (e) {
       parentOptions: data.parentOptionIds,
       childOptions: data.childOptionIds
     },
-    cors: true
+    withCredentials: true
   }, (err, result) => {
-    err = null
-    console.log(`TODO: Remove this ^`)
-
     if (err) {
       toasty(new Error(err))
       return
