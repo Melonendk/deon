@@ -425,6 +425,37 @@ ul#bestof2018-picks li{
   opacity: 0.5;
 }
 
+.bestof2018 .artist-row:nth-child(2) h3:before {
+  content: "1";
+}
+.bestof2018 .artist-row:nth-child(3) h3:before {
+  content: "2";
+}
+.bestof2018 .artist-row:nth-child(4) h3:before {
+  content: "3";
+}
+.bestof2018 .artist-row:nth-child(5) h3:before {
+  content: "4";
+}
+.bestof2018 .artist-row:nth-child(6) h3:before {
+  content: "5";
+}
+.bestof2018 .artist-row:nth-child(7) h3:before {
+  content: "6";
+}
+.bestof2018 .artist-row:nth-child(8) h3:before {
+  content: "7";
+}
+.bestof2018 .artist-row:nth-child(9) h3:before {
+  content: "8";
+}
+.bestof2018 .artist-row:nth-child(10) h3:before {
+  content: "9";
+}
+.bestof2018 .artist-row:nth-child(11) h3:before {
+  content: "10";
+}
+
 .bestof2018 .artist-circle {
 	width: 75px;
 	height: 75px;

@@ -1,54 +1,92 @@
-const bestOf2018Scope = {}
+const BESTOF2018_POLLID = '5beb1ee1392fadc053274d59'
+const BESTOF2018_ART_POLLID = '581929beb18f478110e6fcb7'
+
+const pollEndpoint = 'http://localhost:4002'
+
+const PAGE_BESTOF2018 = 'page-best-of-2018'
+
+function processBestOf2018ResultsPage (args) {
+  const scope = {
+    loading: true
+  }
+  renderContent('best-of-2018-results', scope)
+
+  request({
+    url: endpoint + '/doublepoll/' + BESTOF2018_POLLID + '/results'
+  }, (err, result) => {
+    console.log('err', err)
+    console.log('result', result)
+    scope.loading = false
+    renderContent('best-of-2018-results', scope)
+  })
+}
+
+
+function processBestOf2018ArtPage () {
+  const scope = {
+    loading: true
+  }
+  renderContent('best-of-2018-art', scope)
+
+  request({
+    method: 'GET',
+    url: endpoint + '/poll/' + BESTOF2018_ART_POLLID + '/breakdown'
+  }, (err, result) => {
+    scope.loading = false
+    console.log('result', result)
+
+    if (err) {
+      scope.error = err
+      scope.data = null
+    }
+    else {
+      scope.data = result
+      scope.data.choices = result.poll.choices.map((choice, index) => {
+        return {
+          albumArt: choice,
+          index: index
+        }
+      })
+    }
+
+    renderContent('best-of-2018-art', scope)
+  })
+}
+
 
 function processBestOf2018Page () {
-  bestOf2018Scope.data = {
-    status: {
-      open: true,
-      hasVoted: true,
-      hasVotedAlbumArt: true,
-      hasTweeted: true,
-      isSignedIn: isSignedIn(),
-      votingCloseTime: "x"
-    },
-    artists: {
-      1: {
-        artistName: "Conro",
-        songName: "Trippin",
-        artistImg: "https://assets.monstercat.com/artists-profile-images/dc2104d1f7e2689b861a7ac0f978493bab653627.jpg?image_width=256",
-        albumArt: "https://assets.monstercat.com/releases/covers/Conro%20-%20Trippin%20(Art).jpg?image_width=1024",
-        ranking: "1",
-        votes: 5,
-        top: true,
-      },
-      2: {
-        artistName: "AU5",
-        songName: "Song Name",
-        artistImg: "https://assets.monstercat.com/artists-profile-images/9ecb97c287ae0832ac2ef8fef22e0a15f44df80d.jpg?image_width=256",
-        albumArt: "https://assets.monstercat.com/releases/covers/b9eENJpwsDfPvTKswD9t%20-%20Au5%20&%20Nytrix%20-%20Only%20in%20a%20Dream%20(Art).jpg?image_width=1024",
-        ranking: "2",
-        votes: 5,
-      },
-      3: {
-        artistName: "Justin OH",
-        songName: "U & ME",
-        artistImg: "https://assets.monstercat.com/artists-profile-images/justinoh_monstercat_pressforwebsite.jpg?image_width=256",
-        albumArt: "https://assets.monstercat.com/releases/covers/Gpy7BfepixglUXmPqdv8%20-%20Justin%20OH%20-%20U&ME%20(Art).jpg?image_width=1024",
-        ranking: "3",
-        votes: 3,
-      },
-      4: {
-        artistName: "Grant",
-        songName: "The Edge feat. Nevve",
-        artistImg: "https://assets.monstercat.com/artists-profile-images/a6b2ddbf085be7f86c0cc212243f3e967e36e5da.jpg?image_width=256",
-        albumArt: "https://assets.monstercat.com/releases/covers/AzpmAEpKkyfUUYZc1JE4%20-%20Grant%20-%20The%20Edge%20(feat.%20Nevve)%20(Art).jpg?image_width=1024",
-        ranking: "4",
-        votes: 2,
-      },
-    },
-    artistOptions: bestof2018data.parentOptions
+  const scope = {
+    loading: true,
+    error: null,
   }
-  renderContent('best-of-2018', bestOf2018Scope)
-  renderContent('best-of-2018-results', bestOf2018Scope)
+
+  renderContent('best-of-2018', scope)
+
+  request({
+    url: endpoint + '/doublepoll/5beb1ee1392fadc053274d59'
+  }, (err, result) => {
+    scope.loading = false
+    console.log('result', result)
+    if (err) {
+      scope.error = err
+      scope.data = {}
+    }
+    else {
+      const status = result.status
+      const artistOptions = result.parentOptions.map((option) => {
+        return option
+      })
+
+      
+      scope.data = result
+      scope.data.isSignedIn = isSignedIn()
+      scope.data.artistOptions = artistOptions
+      scope.data.status.open = status.started && !status.ended
+    }
+
+    cache(PAGE_BESTOF2018, scope)
+    renderContent('best-of-2018', scope)
+  })
 }
 
 function filterBestOf2018Artists(e, input){
@@ -75,16 +113,20 @@ function filterBestOf2018Artists(e, input){
 function openAddArtistTrack (e, el, rank) {
   e.preventDefault()
   const template = 'add-artist-track'
-  const key = el.dataset.pollId
-  const x = bestof2018data.childOptions[key]
+  const key = el.dataset.optionId
+  console.log('key', key);
 
-  if (!x) {
+  const bestof2018scope = cache(PAGE_BESTOF2018)
+
+  const options = bestof2018scope.data.childOptions[key]
+
+  if (!options) {
     toasty(Error('An error occurred, there was an issue with the poll.'))
     return
   }
   openModal(template, {
-    "options": x,
-    "pollId": key,
+    "options": options,
+    "optionId": key,
     "position": rank,
   })
 }
@@ -92,28 +134,51 @@ function openAddArtistTrack (e, el, rank) {
 function onSubmitArtistTrack(e, el) {
   e.preventDefault()
   var fd = new FormData(el)
-  var artistInfo = bestof2018data.parentOptions.find(x => x._id == fd.get('parentId'))
-  var trackInfo = bestof2018data.childOptions[artistInfo._id].find(x => x._id == fd.get('pollTrackId'))
-  var parent = findNode('#bestof2018-picks')
+  const parentOptionId = fd.get('parentId')
+  const childOptionId = fd.get('pollTrackId')
+
+  const bestof2018scope = cache(PAGE_BESTOF2018)
+  const bestof2018data = bestof2018scope.data
+
+  var artistOption = bestof2018data.parentOptions.find((parentOption) => {
+    return parentOption._id == parentOptionId
+  })
+
+  if (!artistOption) {
+    toasty(Error('Could not find artist info'))
+    return
+  }
+
+  var trackOption = bestof2018data.childOptions[artistOption._id].find((option) =>{
+      console.log('option', option);
+    return option._id == childOptionId
+  })
+
+  console.log('artistOption', artistOption)
+  console.log('trackOption', trackOption)
+
+  var picksEl = findNode('#bestof2018-picks')
   var example = findNode('.example-row')
-  var rank = parseInt(fd.get("position")) || parent.childElementCount
+  var rank = parseInt(fd.get("position")) || picksEl.childElementCount
 
   var li = render('bestof2018-row', {
-    artistName: artistInfo.title,
-    songName: trackInfo.title,
-    artistImg: artistInfo.image,
-    albumArt: trackInfo.image,
+    artistName: artistOption.title,
+    songName: trackOption.title,
+    artistImg: artistOption.image,
+    albumArt: trackOption.image,
     ranking: rank,
-    _id: artistInfo._id,
+    _id: artistOption._id,
+    parentOptionId: artistOption._id,
+    childOptionId: trackOption._id
   })
 
   if (fd.has("position")){
     // offset by one because of example li
-    parent.children[rank].replaceWith(li.firstElementChild)
+    picksEl.children[rank].replaceWith(li.firstElementChild)
     toasty("Updated track.")
   }
   else {
-    parent.appendChild(li.firstElementChild)
+    picksEl.appendChild(li.firstElementChild)
     example.classList.toggle('hide', true)
     toasty("Added artist track.")
   }
@@ -132,4 +197,53 @@ function onRemoveArtist(e, el){
       findNode('.example-row').classList.toggle('hide', false)
     }
   }
+}
+
+function clickSubmitBestOf2018 (e) {
+  const picksEl = findNode('#bestof2018-picks')
+  let data = formToObject(picksEl)
+
+  data = fixFormDataIndexes(data, ['parentOptionIds', 'childOptionIds'])
+
+  if (!data.parentOptionIds.length) {
+    toasty(Error('No artists selected'))
+    return
+  }
+
+  request({
+    method: 'POST',
+    url:  endpoint + '/doublepoll/' + BESTOF2018_POLLID + '/vote',
+    data: {
+      parentOptions: data.parentOptionIds,
+      childOptions: data.childOptionIds
+    },
+    cors: true
+  }, (err, result) => {
+    err = null
+    console.log(`TODO: Remove this ^`)
+
+    if (err) {
+      toasty(new Error(err))
+      return
+    }
+
+    toasty('Success!')
+    go('/best-of-2018-art')
+  })
+}
+
+function submitBestOf2018AlbumArt (event) {
+  submitForm(event, {
+    method: 'POST',
+    url: endpoint + '/vote',
+    transformData: (data) => {
+      data.pollId = BESTOF2018_ART_POLLID
+      data.choices = [data.choice]
+      return data
+    },
+    success: () => {
+      toasty('Vote submitted')
+      go('/best-of-2018-results')
+    }
+  })
 }
