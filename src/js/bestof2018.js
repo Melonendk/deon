@@ -158,6 +158,10 @@ function openAddBestOfArtistModal (e, el, rank) {
   const picksEl = findNode('#bestof2018-picks')
   const key = el.dataset.optionId
 
+  if (picksEl.childElementCount > 10) {
+    toasty(Error("You have already selected 10 artists."))
+    return
+  }
   for (var i = 0; i < picksEl.childElementCount; i++) {
     if (picksEl.children[i].classList.contains(key)) {
       toasty(Error("You have already selected this artist."))
@@ -186,7 +190,7 @@ function onSubmitArtistTrack(e, el) {
     return
   }
 
-  var trackOption = bestof2018data.childOptions[artistOption._id].find((option) =>{
+  var trackOption = bestof2018data.childOptions[artistOption._id].find((option) => {
     return option._id == childOptionId
   })
 
@@ -239,10 +243,9 @@ function clickSubmitBestOf2018 (e) {
   data = fixFormDataIndexes(data, ['parentOptionIds', 'childOptionIds'])
 
   if (!data.parentOptionIds.length) {
-    toasty(Error('No artists selected'))
+    toasty(Error('No artists selected.'))
     return
   }
-
   request({
     method: 'POST',
     url:  endpoint + '/doublepoll/' + BESTOF2018_POLLID + '/vote',

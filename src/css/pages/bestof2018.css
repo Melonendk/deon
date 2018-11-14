@@ -33,8 +33,11 @@ h1.bestof2018-logo span {
   margin-bottom: 0px;
 }
 
-.bestof2018-header {
+.bestof2018-header,
+.bestof2018-voting,
+.bestof2018-results {
 	width: 100%;
+	padding: 0em 5em;
 }
 
 .bestof2018-header > * {
@@ -109,6 +112,12 @@ h1.bestof2018-logo span {
 
 	.bestof2018-page .bestof2018-header p {
 		margin-top: 1.5em
+	}
+
+	.bestof2018-header,
+	.bestof2018-voting,
+	.bestof2018-results{
+		padding: 0em;
 	}
 }
 
