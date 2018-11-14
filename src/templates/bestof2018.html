@@ -270,22 +270,22 @@
     <ul>
     {{#each results}}
       <li class="row flex content-row artist-row artist-row-results cl-white">
-        <div class="banner" style='background-image: url("{{albumArt}}")'></div>
+        <div class="banner" style='background-image: url("{{winningChild.image}}")'></div>
         <div class="flex" style="flex: 1 1 auto;">
           <div class="m-auto-0 artist-ranking">
-            <h3>{{ranking}}</h3> 
+            <h3>{{rank}}</h3> 
           </div>
           <div class="artist-circle m-auto-0 ml-3 mr-3">  
             <a href="" label="Artist Image">
-              <img src="{{artistImg}}">
+              <img src="{{option.image}}">
             </a>
           </div>
           <div class="m-auto-0">
-            <h3 class="artist-name"><span class="bestof2018-mobile">{{ranking}}.</span> {{artistName}}</h3>
-            <p class="song-title"><a href="{{songUrl}}"><i class="fa fa-music mr-1"></i>{{songName}}</a></p>
+            <h3 class="artist-name"><span class="bestof2018-mobile">{{rank}}.</span> {{option.title}}</h3>
+            <p class="song-title"><a href="{{songUrl}}"><i class="fa fa-music mr-1"></i>{{winningChild.title}}</a></p>
           </div>
         </div>
-        <p class="artist-votes">{{votes}} votes</p>
+        <p class="artist-votes num-votes-{{votes}}">{{votes}} vote</p>
       </li>
     {{/each}}
     </ul>
@@ -309,14 +309,13 @@
         <div class="bestof2018-header-results">
           <h1 class="title uppercase bestof2018-logo text center m-auto">Best of <span>2018</span> <span class="title-results">Results</span></h1>
           {{#data}}
-          {{^status.hasVoted}}
-            <p class="mt-2">Here are the top 30 artist picks!</p>
-            <a href="/bestof2018" class="button button-bestof2018 mt-4">Vote Now</a> 
-          {{/status.hasVoted}}
-          {{#status.hasVoted}}
-            <p class="mt-2">Thanks for submitting your Best of 2018 picks. <br>Here's the leaderboard for the top 30!</p>
-            <a href="/bestof2018" class="button button-bestof2018 mt-4"><i class="fa fa-twitter"></i> Tweet Your Picks</a>
-          {{/status.hasVoted}}
+            {{#unless breakdown.status.hasVoted}}
+              <p class="mt-2">Here are the top 30 artist picks!</p>
+              <a href="/best-of-2018" class="button button-bestof2018 mt-4">Vote Now</a> 
+            {{else}}
+              <p class="mt-2">Thanks for submitting your Best of 2018 picks. <br>Here's the leaderboard for the top 30!</p>
+              <a href="{{tweetUrl}}" target="_blank" class="button button-bestof2018 mt-4"><i class="fa fa-twitter"></i> Tweet Your Picks</a>
+            {{/unless}}
           {{/data}}
         </div>
       </div>

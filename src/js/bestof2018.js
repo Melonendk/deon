@@ -1,7 +1,7 @@
 const BESTOF2018_POLLID = '5beb1ee1392fadc053274d59'
 const BESTOF2018_ART_POLLID = '581929beb18f478110e6fcb7'
 
-const pollEndpoint = 'http://localhost:4002'
+const pollEndpoint = endpoint //'http://localhost:4002'
 
 const PAGE_BESTOF2018 = 'page-best-of-2018'
 
@@ -14,22 +14,56 @@ function processBestOf2018ResultsPage (args) {
   renderContent('best-of-2018-results', scope)
 
   request({
-    url: endpoint + '/doublepoll/' + BESTOF2018_POLLID + '/results'
+    url: endpoint + '/doublepoll/' + BESTOF2018_POLLID + '/results',
+    withCredentials: true
   }, (err, result) => {
     scope.loading = false
-    result = bestof2018data
-    err = null
 
     if (err) {
       scope.error = err
     }
-
     else {
       scope.data = result
-      const status = result.status
+
+      if (result.breakdown.status.hasVoted) {
+        const tweet = getVotedForTweet(result.breakdown)
+        scope.data.tweetUrl = getVotedForTweetIntentUrl(tweet)
+      }
     }
+
     renderContent('best-of-2018-results', scope)
   })
+}
+
+
+function getVotedForTweetIntentUrl (tweet) {
+  return 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet);
+}
+
+function getVotedForTweet (breakdown) {
+  if(!breakdown.status.hasVoted) {
+    return false
+  }
+
+  let usernames = breakdown.parentOptions.map((opt) => {
+    return opt.meta.twitterName.split(' + ').join('+')
+  })
+
+  usernames = usernames.splice(0, 9)
+
+  var tweet = 'My @Monstercat Best of 2018 artists are ' + usernames.join(',')
+
+  var link = 'https://monstercat.com/bestof2018';
+  if(tweet.length + link.length < 281) {
+    tweet += ' ' + link;
+  }
+
+  var hashtag = ' #McatBestof2018'
+  if(tweet.length + hashtag.length <= 280) {
+    tweet += hashtag;
+  }
+
+  return tweet;
 }
 
 function processBestOf2018ArtPage () {
@@ -41,9 +75,12 @@ function processBestOf2018ArtPage () {
 
   request({
     method: 'GET',
-    url: endpoint + '/poll/' + BESTOF2018_ART_POLLID + '/breakdown'
+    url: endpoint + '/poll/' + BESTOF2018_ART_POLLID + '/breakdown',
+    withCredentials: true
   }, (err, result) => {
     scope.loading = false
+    
+    /*
     err = null
     result = {
       poll: {
@@ -57,6 +94,7 @@ function processBestOf2018ArtPage () {
         ]
       }
     }
+    */
 
     if (err) {
       scope.error = err
@@ -85,11 +123,10 @@ function processBestOf2018Page () {
   renderContent('best-of-2018', scope)
 
   request({
-    url: endpoint + '/doublepoll/5beb1ee1392fadc053274d59'
+    url: endpoint + '/doublepoll/5beb1ee1392fadc053274d59',
+    withCredentials: true
   }, (err, result) => {
     scope.loading = false
-    err = null
-    result = bestof2018data
 
     if (err) {
       scope.error = err
@@ -245,7 +282,6 @@ function clickSubmitBestOf2018 (e) {
     },
     withCredentials: true
   }, (err, result) => {
-    err = null
     if (err) {
       toasty(new Error(err))
       return

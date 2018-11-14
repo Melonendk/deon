@@ -399,6 +399,14 @@ ul#bestof2018-picks li{
   font-weight: 700
 }
 
+.bestof2018 p.artist-votes:after {
+  content: "s";
+}
+
+.bestof2018 p.artist-votes.num-votes-1:after {
+  content: "";
+}
+
 .bestof2018 .artist-row .banner {
   position: absolute;
   width: 100%;
