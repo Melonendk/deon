@@ -30,7 +30,7 @@ const bestof2018data = {
         "updatedAt": "0001-01-01T00:00:00Z"
     },
     "status": {
-        "hasVoted": true,
+        "hasVoted": false,
         "started": true,
         "ended": false,
     },

@@ -425,44 +425,44 @@ ul#bestof2018-picks li{
   opacity: 0.5;
 }
 
-.bestof2018 .artist-row-pick:nth-child(2) .artist-ranking h3:before,
-.bestof2018 .artist-row-pick:nth-child(2) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(2) .artist-ranking h3:before,
+.bestof2018 .artist-row-picks:nth-child(2) .bestof2018-mobile:before {
   content: "1";
 }
-.bestof2018 .artist-row-pick:nth-child(3) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(3) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(3) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(3) .bestof2018-mobile:before {
   content: "2";
 }
-.bestof2018 .artist-row-pick:nth-child(4) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(4) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(4) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(4) .bestof2018-mobile:before {
   content: "3";
 }
-.bestof2018 .artist-row-pick:nth-child(5) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(5) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(5) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(5) .bestof2018-mobile:before {
   content: "4";
 }
-.bestof2018 .artist-row-pick:nth-child(6) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(6) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(6) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(6) .bestof2018-mobile:before {
   content: "5";
 }
-.bestof2018 .artist-row-pick:nth-child(7) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(7) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(7) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(7) .bestof2018-mobile:before {
   content: "6";
 }
-.bestof2018 .artist-row-pick:nth-child(8) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(8) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(8) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(8) .bestof2018-mobile:before {
   content: "7";
 }
-.bestof2018 .artist-row-pick:nth-child(9) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(9) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(9) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(9) .bestof2018-mobile:before {
   content: "8";
 }
-.bestof2018 .artist-row-pick:nth-child(10) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(10) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(10) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(10) .bestof2018-mobile:before {
   content: "9";
 }
-.bestof2018 .artist-row-pick:nth-child(11) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(11) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(11) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(11) .bestof2018-mobile:before {
   content: "10";
 }
 
