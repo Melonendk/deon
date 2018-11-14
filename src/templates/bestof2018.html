@@ -17,29 +17,48 @@
         data-route="^[Bb]est-[Oo]f-2018-art$"
         data-template="best-of-2018-art"
         data-process="processBestOf2018ArtPage">
-{{#if loading}}
-  {{>loading-view}}
-{{else}}
-  {{#if error}}
-    ERROR: {{error}}
+<div class="bestof2018 bestof2018-page white">
+  {{#if loading}}
+    {{>loading-view}}
   {{else}}
+    {{#if error}}
+      ERROR: {{error}}
+    {{else}}
     {{#data}}
-      <form class="bestof2018-album-poll mt-4" role="bestof2018-album-poll" onsubmit="submitBestOf2018AlbumArt(event)">
-        {{#each choices}}
-        <label>
-          <input type="radio" name="choice" value="{{index}}">
-          <img src="{{albumArt}}">
-        </label>
-        {{/each}}
-        <div class="submit-container">
-          <button class="button button-bestof2018 mt-4">
-            Submit
-          </button>
+     <div class="top-banner">
+     {{>bestof2018-banner-top}}
+      <div class="container flex">
+        <div class="bestof2018-header-results">
+          <h1 class="uppercase bestof2018-logo">Best of <span>2018</span> <span class="title-album-art">Album art</span></h1>
+          <h3 class="mt-2">Select your favorite album art!</h3>
         </div>
-      </form>
+      </div>
+     </div>
+     <div class="banner-bottom">
+      <div class="banner">
+        <div class="banner-shade"></div>
+        <div class="gradient gradient--inverted"></div>
+      </div>
+      <div class="container">
+        <form class="bestof2018-album-poll" role="bestof2018-album-poll" onsubmit="submitBestOf2018AlbumArt(event)">
+        {{#each choices}}
+          <label>
+            <input type="radio" name="choice" value="{{index}}">
+            <img src="{{albumArt}}">
+          </label>
+        {{/each}}
+          <div class="submit-container">
+            <button class="button button-bestof2018 mt-4">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+     </div>
     {{/data}}
+    {{/if}}
   {{/if}}
-{{/if}}
+  </div>
 </script>
 
 <script type="text/html"
@@ -61,34 +80,19 @@
         <div class="container flex">
           <div class="bestof2018-header">
             {{^status.open}}
-            <div class="bestof2018-closed">
-              <h1 class="uppercase bestof2018-logo">Best of <span>2018</span></h1>
-              <h2>Voting is over!</h2>
-              <a class="button button-bestof2018 mt-4" href="/best-of-2018/results">View Results</a>
-            </div>
+              <div class="bestof2018-centered">
+                <h1 class="uppercase bestof2018-logo">Best of <span>2018</span></h1>
+                <h2>Voting is now over!</h2>
+                <a class="button button-bestof2018 mt-4" href="/best-of-2018/results">View Results</a>
+              </div>
             {{/status.open}}
             {{#status.open}}
               {{#status.hasVoted}}
-                <div class="bestof2018-header-tweet">
-                {{#if status.hasTweeted}}
-                  <h1 class="uppercase bestof2018-logo">Best of <span>2018</span> </h1>
-                  <p>You've already submitted your votes!<br>Head on over to the live results leaderboard to check out the action!</p>
-                  <a class="button mt-4 button-bestof2018" href="/best-of-2018/results">View Live Results</a>
-                {{else}}
-                  {{#if status.hasVotedAlbumArt}}
-                  <h1 class="uppercase bestof2018-logo">Best of <span>2018</span> </h1>
-                    <h3>Thank you for submitting your vote! </h3>
-                    <p class="mt-3 mb-4">The fun doesn't stop here though, make sure to tweet at your favourite artists to let them know that their tracks were your top picks of the year. Then head over to the live results leaderboard to check out the action!
-                    </p>
-                    {{>best-of-2018-tweet}}
-                  {{else}}
-                  <h1 class="uppercase bestof2018-logo">Best of <span>2018</span> <span class="title-album-art">Album art</span></h1>
-                    <h3 class="mt-2">Select your favorite album art!</h3>
-                   {{>best-of-2018-album-poll}}
-                  {{/if}}
-                {{/if}}
-
-                </div>
+              <div class="bestof2018-centered">
+                <h1 class="uppercase bestof2018-logo">Best of <span>2018</span></h1>
+                <h2>Thanks for voting!</h2>
+                <a class="button button-bestof2018 mt-4 mb-3" href="/best-of-2018/results">View Live Results</a>
+              </div>
               {{/status.hasVoted}}
               {{^status.hasVoted}}
                 <h1 class="uppercase bestof2018-logo">Best of <span>2018</span></h1>
@@ -174,7 +178,7 @@
         data-partial
         data-template="bestof2018-row"
         >
-<li class="row flex content-row artist-row">
+<li class="row flex content-row artist-row artist-row-picks {{_id}}" id="">
   <input type="hidden" name="parentOptionIds[{{ranking}}]" value="{{parentOptionId}}" />
   <input type="hidden" name="childOptionIds[{{ranking}}]" value="{{childOptionId}}" />
   <div class="banner" style='background-image: url("{{albumArt}}")'></div>
@@ -188,7 +192,7 @@
       </a>
     </div>
     <div class="m-auto-0">
-      <h3 class="artist-name"><span class="bestof2018-mobile">{{ranking}}.</span> {{artistName}}</h3>
+      <h3 class="artist-name"><span class="bestof2018-mobile">.</span> {{artistName}}</h3>
       <p class="song-title song-title-edit"><a data-option-id="{{_id}}" onclick="openAddArtistTrack(event, this, '{{ranking}}')"><i class="fa fa-heart"></i><i class="fa fa-pencil"></i>{{songName}}</a></p>
     </div>
   </div>
@@ -259,27 +263,12 @@
 
 <script type="text/html"
         data-partial
-        data-template="best-of-2018-tweet"
-        >
-<div class="bestof2018-tweet-form">
-  <form id="tweet-vote" class="mb-4" onsubmit="">
-    <textarea name="tweet" rows="4">I voted for ...  </textarea>
-    <div>
-      <a class="button button--white" target="_blank" role="tweet" href="">Tweet Your Picks</a>
-      <a class="button button--white-outline" href="/best-of-2018/results">View Live results</a>
-    </div>
-  </form>
-</div>
-</script>
-
-<script type="text/html"
-        data-partial
         data-template="bestof2018-results"
         >
 <div class="bestof2018-results">
   {{#data}}
     <ul>
-    {{#each artists}}
+    {{#each results}}
       <li class="row flex content-row artist-row artist-row-results cl-white">
         <div class="banner" style='background-image: url("{{albumArt}}")'></div>
         <div class="flex" style="flex: 1 1 auto;">
@@ -319,14 +308,15 @@
       <div class="container flex">
         <div class="bestof2018-header-results">
           <h1 class="title uppercase bestof2018-logo text center m-auto">Best of <span>2018</span> <span class="title-results">Results</span></h1>
-          <p class="mt-2">Here are the top 30 artist picks!</p>
           {{#data}}
-            {{^status.hasVoted}}
-              <a href="/bestof2018" class="button button-bestof2018 mt-4">Vote Now</a> 
-            {{/status.hasVoted}}
-            {{^status.hasTweeted}}
-              <a href="/bestof2018" class="button button-bestof2018 mt-4"><i class="fa fa-twitter"></i> Tweet Your Picks</a>
-            {{/status.hasTweeted}}
+          {{^status.hasVoted}}
+            <p class="mt-2">Here are the top 30 artist picks!</p>
+            <a href="/bestof2018" class="button button-bestof2018 mt-4">Vote Now</a> 
+          {{/status.hasVoted}}
+          {{#status.hasVoted}}
+            <p class="mt-2">Thanks for submitting your Best of 2018 picks. <br>Here's the leaderboard for the top 30!</p>
+            <a href="/bestof2018" class="button button-bestof2018 mt-4"><i class="fa fa-twitter"></i> Tweet Your Picks</a>
+          {{/status.hasVoted}}
           {{/data}}
         </div>
       </div>

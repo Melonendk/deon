@@ -7,25 +7,36 @@ const PAGE_BESTOF2018 = 'page-best-of-2018'
 
 function processBestOf2018ResultsPage (args) {
   const scope = {
-    loading: true
+    loading: true,
+    error: null
   }
+
   renderContent('best-of-2018-results', scope)
 
   request({
     url: endpoint + '/doublepoll/' + BESTOF2018_POLLID + '/results'
   }, (err, result) => {
-    console.log('err', err)
-    console.log('result', result)
     scope.loading = false
+    result = bestof2018data
+    err = null
+
+    if (err) {
+      scope.error = err
+    }
+
+    else {
+      scope.data = result
+      const status = result.status
+    }
     renderContent('best-of-2018-results', scope)
   })
 }
-
 
 function processBestOf2018ArtPage () {
   const scope = {
     loading: true
   }
+
   renderContent('best-of-2018-art', scope)
 
   request({
@@ -33,7 +44,19 @@ function processBestOf2018ArtPage () {
     url: endpoint + '/poll/' + BESTOF2018_ART_POLLID + '/breakdown'
   }, (err, result) => {
     scope.loading = false
-    console.log('result', result)
+    err = null
+    result = {
+      poll: {
+        choices: [
+          "https://assets.monstercat.com/releases/covers/Aero Chord - Shadows (feat. Nevve) (Art).jpg",
+          "https://assets.monstercat.com/releases/covers/Aero Chord - Shadows (feat. Nevve) (Art).jpg",
+          "https://assets.monstercat.com/releases/covers/Aero Chord - Shadows (feat. Nevve) (Art).jpg",
+          "https://assets.monstercat.com/releases/covers/Aero Chord - Shadows (feat. Nevve) (Art).jpg",
+          "https://assets.monstercat.com/releases/covers/Aero Chord - Shadows (feat. Nevve) (Art).jpg",
+          "https://assets.monstercat.com/releases/covers/Aero Chord - Shadows (feat. Nevve) (Art).jpg",
+        ]
+      }
+    }
 
     if (err) {
       scope.error = err
@@ -53,7 +76,6 @@ function processBestOf2018ArtPage () {
   })
 }
 
-
 function processBestOf2018Page () {
   const scope = {
     loading: true,
@@ -66,7 +88,9 @@ function processBestOf2018Page () {
     url: endpoint + '/doublepoll/5beb1ee1392fadc053274d59'
   }, (err, result) => {
     scope.loading = false
-    console.log('result', result)
+    err = null
+    result = bestof2018data
+
     if (err) {
       scope.error = err
       scope.data = {}
@@ -77,7 +101,6 @@ function processBestOf2018Page () {
         return option
       })
 
-      
       scope.data = result
       scope.data.isSignedIn = isSignedIn()
       scope.data.artistOptions = artistOptions
@@ -112,9 +135,9 @@ function filterBestOf2018Artists(e, input){
 
 function openAddArtistTrack (e, el, rank) {
   e.preventDefault()
+  const picksEl = findNode('#bestof2018-picks')
   const template = 'add-artist-track'
   const key = el.dataset.optionId
-  console.log('key', key);
 
   const bestof2018scope = cache(PAGE_BESTOF2018)
 
@@ -124,6 +147,13 @@ function openAddArtistTrack (e, el, rank) {
     toasty(Error('An error occurred, there was an issue with the poll.'))
     return
   }
+
+  for (var i = 0; i < picksEl.childElementCount; i++) {
+    if (picksEl.children[i].classList.contains(key)) {
+      return toasty(Error("You have already selected this artist."))
+    }
+  }
+
   openModal(template, {
     "options": options,
     "optionId": key,
@@ -150,12 +180,8 @@ function onSubmitArtistTrack(e, el) {
   }
 
   var trackOption = bestof2018data.childOptions[artistOption._id].find((option) =>{
-      console.log('option', option);
     return option._id == childOptionId
   })
-
-  console.log('artistOption', artistOption)
-  console.log('trackOption', trackOption)
 
   var picksEl = findNode('#bestof2018-picks')
   var example = findNode('.example-row')
@@ -219,11 +245,11 @@ function clickSubmitBestOf2018 (e) {
     },
     withCredentials: true
   }, (err, result) => {
+    err = null
     if (err) {
       toasty(new Error(err))
       return
     }
-
     toasty('Success!')
     go('/best-of-2018-art')
   })
@@ -240,7 +266,7 @@ function submitBestOf2018AlbumArt (event) {
     },
     success: () => {
       toasty('Vote submitted')
-      go('/best-of-2018-results')
+      go('/best-of-2018/results')
     }
   })
 }
