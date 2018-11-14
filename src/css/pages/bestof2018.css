@@ -345,7 +345,7 @@ p.song-title a:hover {
 .bestof2018 .content-row.select-row {
   border: 4px solid #fff;
   border-top: 0;
-  max-height: 170px;
+  max-height: 260px;
   overflow: auto;
 }
 
@@ -422,8 +422,8 @@ ul#bestof2018-picks li{
   width: 100%;
   height: 100%;
   z-index: 1;
-  opacity: 0.5;
-}
+	  opacity: 0.5;
+	}
 
 .bestof2018 .artist-row-picks:nth-child(2) .artist-ranking h3:before,
 .bestof2018 .artist-row-picks:nth-child(2) .bestof2018-mobile:before {
@@ -556,6 +556,7 @@ h1 span.title-album-art {
 
 .bestof2018-album-poll {
 	max-width: 780px;
+	text-align: center;
 	margin: auto;
 }
 
