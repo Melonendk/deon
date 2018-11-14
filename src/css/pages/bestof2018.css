@@ -33,8 +33,11 @@ h1.bestof2018-logo span {
   margin-bottom: 0px;
 }
 
-.bestof2018-header {
+.bestof2018-header,
+.bestof2018-voting,
+.bestof2018-results {
 	width: 100%;
+	padding: 0em 5em;
 }
 
 .bestof2018-header > * {
@@ -109,6 +112,12 @@ h1.bestof2018-logo span {
 
 	.bestof2018-page .bestof2018-header p {
 		margin-top: 1.5em
+	}
+
+	.bestof2018-header,
+	.bestof2018-voting,
+	.bestof2018-results{
+		padding: 0em;
 	}
 }
 
@@ -345,7 +354,7 @@ p.song-title a:hover {
 .bestof2018 .content-row.select-row {
   border: 4px solid #fff;
   border-top: 0;
-  max-height: 170px;
+  max-height: 260px;
   overflow: auto;
 }
 
@@ -430,47 +439,47 @@ ul#bestof2018-picks li{
   width: 100%;
   height: 100%;
   z-index: 1;
-  opacity: 0.5;
-}
+	  opacity: 0.5;
+	}
 
-.bestof2018 .artist-row-pick:nth-child(2) .artist-ranking h3:before,
-.bestof2018 .artist-row-pick:nth-child(2) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(2) .artist-ranking h3:before,
+.bestof2018 .artist-row-picks:nth-child(2) .bestof2018-mobile:before {
   content: "1";
 }
-.bestof2018 .artist-row-pick:nth-child(3) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(3) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(3) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(3) .bestof2018-mobile:before {
   content: "2";
 }
-.bestof2018 .artist-row-pick:nth-child(4) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(4) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(4) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(4) .bestof2018-mobile:before {
   content: "3";
 }
-.bestof2018 .artist-row-pick:nth-child(5) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(5) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(5) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(5) .bestof2018-mobile:before {
   content: "4";
 }
-.bestof2018 .artist-row-pick:nth-child(6) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(6) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(6) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(6) .bestof2018-mobile:before {
   content: "5";
 }
-.bestof2018 .artist-row-pick:nth-child(7) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(7) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(7) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(7) .bestof2018-mobile:before {
   content: "6";
 }
-.bestof2018 .artist-row-pick:nth-child(8) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(8) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(8) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(8) .bestof2018-mobile:before {
   content: "7";
 }
-.bestof2018 .artist-row-pick:nth-child(9) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(9) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(9) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(9) .bestof2018-mobile:before {
   content: "8";
 }
-.bestof2018 .artist-row-pick:nth-child(10) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(10) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(10) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(10) .bestof2018-mobile:before {
   content: "9";
 }
-.bestof2018 .artist-row-pick:nth-child(11) .artist-ranking h3:before, 
-.bestof2018 .artist-row-pick:nth-child(11) .bestof2018-mobile:before {
+.bestof2018 .artist-row-picks:nth-child(11) .artist-ranking h3:before, 
+.bestof2018 .artist-row-picks:nth-child(11) .bestof2018-mobile:before {
   content: "10";
 }
 
@@ -564,6 +573,7 @@ h1 span.title-album-art {
 
 .bestof2018-album-poll {
 	max-width: 780px;
+	text-align: center;
 	margin: auto;
 }
 

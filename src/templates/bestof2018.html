@@ -22,7 +22,6 @@
     {{>loading-view}}
   {{else}}
     {{#if error}}
-      ERROR: {{error}}
     {{else}}
     {{#data}}
      <div class="top-banner">
@@ -72,7 +71,6 @@
     {{>loading-view}}
   {{else}}
     {{#if error}}
-      <span style="color: red">ERROR: {{error}}</span>
     {{else}}
       {{#data}}
         <div class="top-banner">
@@ -155,7 +153,7 @@
     </div>
     <div class="content-row select-row select-row-results">
       {{#each artistOptions}}
-      <div class="bestof2018-search-result"><span class="artist-name-search" data-option-id="{{_id}}" onclick="openAddArtistTrack(event, this)">{{title}}</span><button class="faux add-artist-track" data-option-id="{{_id}}" onclick="openAddArtistTrack(event, this)"><i class="fa fa-plus"></i></button></div>
+      <div class="bestof2018-search-result"><span class="artist-name-search" data-option-id="{{_id}}" onclick="openAddBestOfArtistModal(event, this)">{{title}}</span><button class="faux add-artist-track" data-option-id="{{_id}}" type="button" onclick="openAddBestOfArtistModal(event, this)"><i class="fa fa-plus"></i></button></div>
       {{/each}}
       <div class="bestof2018-search-result hide" id="bestof2018-no-results">No results found.</div>
     </div>
@@ -193,7 +191,7 @@
     </div>
     <div class="m-auto-0">
       <h3 class="artist-name"><span class="bestof2018-mobile">.</span> {{artistName}}</h3>
-      <p class="song-title song-title-edit"><a data-option-id="{{_id}}" onclick="openAddArtistTrack(event, this, '{{ranking}}')"><i class="fa fa-heart"></i><i class="fa fa-pencil"></i>{{songName}}</a></p>
+      <p class="song-title song-title-edit"><a data-option-id="{{_id}}" onclick="openBestOfArtistModal(event, this, '{{ranking}}')"><i class="fa fa-heart"></i><i class="fa fa-pencil"></i>{{songName}}</a></p>
     </div>
   </div>
   <div class="m-auto-0">

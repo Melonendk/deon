@@ -170,11 +170,11 @@ function filterBestOf2018Artists(e, input){
   findNode("#bestof2018-no-results").classList.toggle('hide', count)
 }
 
-function openAddArtistTrack (e, el, rank) {
+function openBestOfArtistModal (e, el, rank) {
   e.preventDefault()
   const picksEl = findNode('#bestof2018-picks')
-  const template = 'add-artist-track'
   const key = el.dataset.optionId
+  const template = 'add-artist-track'
 
   const bestof2018scope = cache(PAGE_BESTOF2018)
 
@@ -184,18 +184,29 @@ function openAddArtistTrack (e, el, rank) {
     toasty(Error('An error occurred, there was an issue with the poll.'))
     return
   }
-
-  for (var i = 0; i < picksEl.childElementCount; i++) {
-    if (picksEl.children[i].classList.contains(key)) {
-      return toasty(Error("You have already selected this artist."))
-    }
-  }
-
   openModal(template, {
     "options": options,
     "optionId": key,
     "position": rank,
   })
+}
+
+function openAddBestOfArtistModal (e, el, rank) {
+  const picksEl = findNode('#bestof2018-picks')
+  const key = el.dataset.optionId
+
+  if (picksEl.childElementCount > 10) {
+    toasty(Error("You have already selected 10 artists."))
+    return
+  }
+  for (var i = 0; i < picksEl.childElementCount; i++) {
+    if (picksEl.children[i].classList.contains(key)) {
+      toasty(Error("You have already selected this artist."))
+      return
+    }
+  }
+  openBestOfArtistModal(e, el, rank)
+  return
 }
 
 function onSubmitArtistTrack(e, el) {
@@ -216,7 +227,7 @@ function onSubmitArtistTrack(e, el) {
     return
   }
 
-  var trackOption = bestof2018data.childOptions[artistOption._id].find((option) =>{
+  var trackOption = bestof2018data.childOptions[artistOption._id].find((option) => {
     return option._id == childOptionId
   })
 
@@ -269,10 +280,9 @@ function clickSubmitBestOf2018 (e) {
   data = fixFormDataIndexes(data, ['parentOptionIds', 'childOptionIds'])
 
   if (!data.parentOptionIds.length) {
-    toasty(Error('No artists selected'))
+    toasty(Error('No artists selected.'))
     return
   }
-
   request({
     method: 'POST',
     url:  endpoint + '/doublepoll/' + BESTOF2018_POLLID + '/vote',
