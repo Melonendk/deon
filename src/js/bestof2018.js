@@ -45,13 +45,11 @@ function getVotedForTweet (breakdown) {
     return false
   }
 
-  let usernames = breakdown.parentOptions.map((opt) => {
-    return opt.meta.twitterName.split(' + ').join('+')
+  let usernames = breakdown.userVotes.map((opt) => {
+    return opt.parentOption.meta.twitterName.split(' + ').join('+')
   })
 
-  usernames = usernames.splice(0, 9)
-
-  var tweet = 'My @Monstercat Best of 2018 artists are ' + usernames.join(',')
+  var tweet = 'My @Monstercat Best of 2018 artists are ' + usernames.join(', ')
 
   var link = 'https://monstercat.com/bestof2018';
   if(tweet.length + link.length < 281) {
@@ -61,6 +59,16 @@ function getVotedForTweet (breakdown) {
   var hashtag = ' #McatBestof2018'
   if(tweet.length + hashtag.length <= 280) {
     tweet += hashtag;
+  }
+
+  if (breakdown.userVotes.length > 1 && tweet.length <= 276) {
+    const last = usernames[usernames.length - 1]
+    const penultimate = usernames[usernames.length - 2]
+    const replace = penultimate + ', ' + last
+
+    const oxford = usernames.length >= 3 ? ',' : ''
+
+    tweet = tweet.replace(replace, penultimate + oxford + ' and ' + last)
   }
 
   return tweet;
