@@ -144,21 +144,21 @@
         data-template="bestof2018-voting"
         >
 <div class="bestof2018-voting">
-  <form role="bestof2018">
+  <form role="bestof2018" onsubmit="submitBestOf2018(event)">
     {{>bestof2018-picks}}
     {{#if isSignedIn}}
     <div class="bestof2018-selection">
       <i class="fa fa-search"></i>
-      <input role="artist-filter" placeholder="Search Artist" value="" onkeyup="filterBestOf2018Artists(event, this)">
+      <input role="artist-filter" placeholder="Search Artist" value="" onkeyup="filterBestOf2018Artists(event, this)" onkeydown="bestOf2018FilterKeydown(event)">
     </div>
     <div class="content-row select-row select-row-results">
       {{#each artistOptions}}
-      <div class="bestof2018-search-result"><span class="artist-name-search" data-option-id="{{_id}}" onclick="openAddBestOfArtistModal(event, this)">{{title}}</span><button class="faux add-artist-track" data-option-id="{{_id}}" type="button" onclick="openAddBestOfArtistModal(event, this)"><i class="fa fa-plus"></i></button></div>
+      <div class="bestof2018-search-result" data-option-id="{{_id}}" onclick="openAddBestOfArtistModal(event, this)"><span class="artist-name-search">{{title}}</span><button class="faux add-artist-track" data-option-id="{{_id}}" type="button" onclick="openAddBestOfArtistModal(event, this)"><i class="fa fa-plus"></i></button></div>
       {{/each}}
       <div class="bestof2018-search-result hide" id="bestof2018-no-results">No results found.</div>
     </div>
     <div class="submit-container">
-      <button class="button button-bestof2018 mt-4" type="button" onclick="clickSubmitBestOf2018(event)">
+      <button class="button button-bestof2018 mt-4">
       Submit Your Votes
     </button>
     </div>
@@ -220,7 +220,7 @@
             {{/each}}
           </select>
         </div>
-        <button class="mt-3" type="submit">Submit</button>
+        <button class="mt-3">Submit</button>
       </form>
     </div>
     <button class="button--close faux" onclick="closeModal(event, this)">
@@ -249,7 +249,7 @@
             {{/each}}
           </select>
         </div>
-        <button class="mt-3" type="submit">Submit</button>
+        <button class="mt-3">Submit</button>
       </form>
     </div>
     <button class="button--close faux" onclick="closeModal(event, this)">

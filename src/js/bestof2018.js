@@ -178,6 +178,21 @@ function filterBestOf2018Artists(e, input){
   findNode("#bestof2018-no-results").classList.toggle('hide', count)
 }
 
+function bestOf2018FilterKeydown(e) {
+  var key = e.charCode || e.keyCode || 0
+  const filterSearch = findNode('[role="artist-filter"]').value
+
+  if (key == 13) {
+    e.preventDefault()
+    if (filterSearch == "") {
+      return
+    }
+    const artistRows = findNodes('.bestof2018-search-result:not(.hide)')
+
+    artistRows[0].click()
+  }
+}
+
 function openBestOfArtistModal (e, el, rank) {
   e.preventDefault()
   const picksEl = findNode('#bestof2018-picks')
@@ -218,11 +233,9 @@ function openAddBestOfArtistModal (e, el, rank) {
 }
 
 function onSubmitArtistTrack(e, el) {
-  e.preventDefault()
   var fd = new FormData(el)
   const parentOptionId = fd.get('parentId')
   const childOptionId = fd.get('pollTrackId')
-
   const bestof2018scope = cache(PAGE_BESTOF2018)
   const bestof2018data = bestof2018scope.data
 
@@ -241,6 +254,7 @@ function onSubmitArtistTrack(e, el) {
 
   var picksEl = findNode('#bestof2018-picks')
   var example = findNode('.example-row')
+  var input = findNode('[role="artist-filter"]')
   var rank = parseInt(fd.get("position")) || picksEl.childElementCount
 
   var li = render('bestof2018-row', {
@@ -265,6 +279,10 @@ function onSubmitArtistTrack(e, el) {
     toasty("Added artist track.")
   }
   closeModal()
+  input.value = ""
+  filterBestOf2018Artists()
+  input.scrollIntoView()
+  input.focus()
 }
 
 function onRemoveArtist(e, el){
@@ -281,7 +299,8 @@ function onRemoveArtist(e, el){
   }
 }
 
-function clickSubmitBestOf2018 (e) {
+function submitBestOf2018 (e) {
+  e.preventDefault()
   const picksEl = findNode('#bestof2018-picks')
   let data = formToObject(picksEl)
 
@@ -304,7 +323,7 @@ function clickSubmitBestOf2018 (e) {
       toasty(new Error(err))
       return
     }
-    toasty('Success!')
+    toasty('Successfully submitted your votes!')
     go('/best-of-2018-art')
   })
 }

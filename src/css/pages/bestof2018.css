@@ -199,6 +199,7 @@ h1 span.title-results {
 .bestof2018-search-result {
 	margin: 15px 0px;
 	font-size: 1.5rem;
+	cursor: pointer;
 }
 
 .bestof2018-search-result button.add-artist-track {
