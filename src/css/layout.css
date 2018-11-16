@@ -612,8 +612,8 @@ body.showing-notice .controls.fixed.playing {
   font-size: 1.5rem;
 }
 
-.global-search--mobile > button,
-.global-search--mobile > input[type="text"]{
+.global-search--mobile button,
+.global-search--mobile input[type="text"]{
   color: #000;
   margin: 0;
   vertical-align: middle;
@@ -625,14 +625,14 @@ body.showing-notice .controls.fixed.playing {
   position: relative;
 }
 
-.global-search--mobile > button {
+.global-search--mobile button {
   position: absolute;
-  left: 5%;
+  left: 0;
   top: 0;
-  padding: 1.35rem 0;
+  padding: 1.35rem 3% 1.35rem 5%;
 }
 
-.global-search--mobile > input[type="text"] {
+.global-search--mobile input[type="text"] {
   width: 100%;
   padding: 1rem;
   padding-left: calc(5% + 1.9rem);

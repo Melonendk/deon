@@ -24,7 +24,7 @@ From src folder: `npm start -- production`
 From bin folder:  
 ```
 npm run build
-npm run serve-bin
+npm run serve-prod
 ```
 
 Read the package.json for more commands.
