@@ -1,5 +1,3 @@
-var endpoint        = endhost + '/api'
-var newshost        = 'https://www.monstercat.com/news-api'
 var datapoint       = 'https://blobcache.monstercat.com'
 var session         = null
 var pageTitleSuffix = 'Monstercat'
@@ -148,6 +146,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
       }, 2000)
     }
   })
+  siteNotices.bfcm.start()
   document.querySelector('.credit [role=year]').innerText = new Date().getFullYear()
 
   window.addEventListener('routenotfound', (e) => {
@@ -177,7 +176,9 @@ document.addEventListener("DOMContentLoaded", (e) => {
       break
     }
     if (typeof (stopCountdownTicks) == 'function') {
-      stopCountdownTicks()
+      if (getCountdownEls().length == 0) {
+        stopCountdownTicks()
+      } 
     }
     if (window.location.pathname.indexOf("search") == -1) {
       const searchFields = findNodes('[name=term]')
@@ -512,17 +513,15 @@ function closeFrontForm (e) {
 
 function submitFrontForm (e) {
   submitForm(e, {
-    url: endpoint + '/support/send',
+    url: `${endpoint2}/support/send`,
     method: 'POST',
     validate: function (data, errors) {
       if (!data.email) {
         errors.push('Email is required')
       }
-
       if (!data.body) {
         errors.push('Message is required')
       }
-
       return errors
     },
     success: function () {
@@ -530,7 +529,6 @@ function submitFrontForm (e) {
       closeFrontForm()
     }
   })
-
   return
 }
 
@@ -869,7 +867,7 @@ function submitRemoveYouTubeClaim (e, el) {
 
       return errs
     },
-    url: endpoint + '/self/remove-claims',
+    url: `${endpoint2}/self/remove-claims`,
     method: 'POST',
     success: function () {
       toasty(strings.claimReleased)
@@ -961,6 +959,11 @@ function mapRelease (release) {
 }
 
 function transformWebsiteDetails (wd) {
+  if (!wd.profileImageUrl) {
+    wd.profileImageUrl = 'https://assets.monstercat.com/artists-profile-images/promo-artist.jpg'
+    wd.imagePositionY = 50
+    wd.hideOnReleasePage = true
+  }
   if (wd.profileImageUrl) {
     wd.image = wd.profileImageUrl
     wd.imageSmall = wd.profileImageUrl + "?image_width=256"
@@ -1051,7 +1054,7 @@ function processHomeFeatured (args) {
   templateProcessor('home-featured', args, {
     hasLoading: true,
     transform: function (args) {
-      var results = args.result.results.map(mapRelease)
+      var results = args.result.results.map(mapRelease).filter( x => x.type != 'Podcast')
       var featured = results.shift()
 
       scope = {
@@ -1197,6 +1200,9 @@ function processRosterYear (obj) {
       var scope = args.result
 
       scope.results.forEach(function (doc) {
+        if (!doc.profileImageUrl) {
+          doc.profileImageUrl = 'https://assets.monstercat.com/artists-profile-images/promo-artist.jpg'
+        }
         if (doc.profileImageUrl)
         { doc.uri = doc.vanityUri || doc.websiteDetailsId || doc._id }
         doc.image = doc.profileImageUrl
@@ -1208,6 +1214,7 @@ function processRosterYear (obj) {
         if (a > b) { return 1 }
         return 0
       })
+
       betterRender(args.template, args.node, scope)
 
       const qo = searchStringToObject()
@@ -1264,9 +1271,9 @@ function transformReleases (obj) {
 }
 
 function isVariousArtistsRelease(obj) {
-  var artists = obj.artists || ""
+  var artists = (obj.artists || "").toLowerCase()
 
-  return artists.toLowerCase().indexOf("various artists") > -1
+  return artists.indexOf("various artists") > -1 || artists == "monstercat"
 }
 
 function processUserReleases (args) {
@@ -1905,7 +1912,7 @@ getStats.translate = function (value) {
   if (isNaN(value)) { return value }
   if (value >= 1000000) {
     return (value / 1000000).toFixed(1) + 'm'
-  } else if (value >= 100000) {
+  } else if (value >= 10000) {
     return (value / 1000).toFixed(0) + 'k'
   }
   return value

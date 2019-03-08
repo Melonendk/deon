@@ -600,7 +600,20 @@ function renderLoading () {
 }
 
 function renderError (err) {
-  renderContent('error', {err: err})
+  let msg
+  if (typeof err == 'string') {
+    msg = err
+  }
+  else if (typeof err == 'object') {
+    if (err.hasOwnProperty('message')) {
+      msg = err.message
+    }
+    else {
+      msg = err.toString()
+    }
+  }
+
+  renderContent('error', {error: msg})
 }
 
 function renderContent (template, scope) {
@@ -618,4 +631,17 @@ function betterRender (template, node, scope) {
 
 function findParentOrSelf (node, matcher) {
   return findParentWith(node, matcher, true)
+}
+
+function keyDownSuperEnter (e) {
+  if ((e.keyCode == 13 || e.keyCode == 10) && e.metaKey) {
+    const form = findParentWith(e.target, 'form')
+
+    if (form) {
+      const btn = form.querySelector('button:not([type="button"]')
+      if (btn) {
+        btn.click()
+      }
+    }
+  }
 }

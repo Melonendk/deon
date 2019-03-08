@@ -1,4 +1,4 @@
-<script type="text/template"
+<script type="text/html"
     data-route="^verify\/(.*)"
     data-source="$endhost/invite/info/$1"
     data-process="processVerifyPage"
@@ -45,7 +45,7 @@
     </div>
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-route="^(signin|sign-in)"
         data-process="processSignInPage"
         data-title="Sign In"
@@ -82,7 +82,7 @@
     </div>
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-partial
         data-template="birthday-fields"
         >
@@ -136,7 +136,7 @@
 <input type="text" class="birthday-year" name="birthday_year" placeholder="YYYY" value="{{birthday_year}}" size="4" />
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-partial
         data-template="sign-in-fields"
         >
@@ -161,7 +161,7 @@
 </table>
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-route="authenticate-token"
         data-title="Sign In 2 Factor">
     <div class="container">
@@ -185,7 +185,7 @@
     </div>
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-route="^forgot-password"
         data-title="Forgot Password?"
         >
@@ -214,7 +214,7 @@
     </div>
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-route="^reset-password"
         data-title="Reset Password"
         data-process="processPasswordResetPage"
@@ -268,7 +268,7 @@
     {{/data}}
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-route="^confirm-sign-up"
         data-title="Confirm Sign Up"
         data-template="confirm-sign-up"
@@ -298,7 +298,7 @@
     </div>
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-route="^sign-up"
         data-title="Sign Up"
         data-process="processSignUpPage"
@@ -337,10 +337,10 @@
     </div>
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-template="account-email-page"
         data-process="processAccountEmailPage"
-        data-source="$endpoint/self"
+        data-source="$endpoint2/self"
         data-title="My Email Settings"
         data-route="^account\/email"
         >
@@ -474,7 +474,7 @@
                         <p>Your Gold subscription lets you add licenses to use our music for your YouTube, Twitch, and Mixer channels.</p>
                         <h3 class="mt-2 mb-2">Your Licenses</h3>
 
-                        <table data-source="$endpoint/self/whitelist" data-process="processLicensesTable" id="licenses-preview" class="mb-4">
+                        <table data-source="$endpoint2/self/whitelists" data-process="processLicensesTable" id="licenses-preview" class="mb-4">
                         </table>
                         {{#if hasGoldAccess}}
                         <a href="/account/licenses" class="button button--cta">Manage Licenses</a> <a href="/licensing/content-creators" class="button button--black">Learn More</a>
@@ -526,9 +526,9 @@
 </script>
 
 
-<script type="text/template"
+<script type="text/html"
         data-route="^(account\/?$|account\/?\?(.*)$)"
-        data-source="$endpoint/self"
+        data-source="$endpoint2/self"
         data-title="My Account"
         data-process="processAccountPage"
         data-template="account-page"
@@ -630,7 +630,7 @@
             <div class="col-xs-12 col-md-6 panel">
                 <div id="settings">
                     <h2>Settings</h2>
-                    <div data-source="$endpoint/self/settings"
+                    <div data-source="$endpoint2/self"
                          data-process="processAccountSettings">
                     </div>
                 </div>
@@ -666,7 +666,7 @@
                             </tbody>
                         </table>
                         <div class="button-group">
-                            <button class="button--full" type="button">Enable</button>
+                            <button class="button--full">Enable</button>
                         </div>
                     </form>
                     {{/enableTwoFactor}}
@@ -781,14 +781,14 @@
     {{/data}}
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-partial
         data-template="get-gold-cta"
 >
 <a href="/gold/buy" data-redirect-url="auto" class="button button--cta button--mcatgold-dark">Get Gold</a>
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-partial
         data-template="password-field"
 >
@@ -805,7 +805,7 @@
 </button>
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-partial
         data-template="signup-fields">
     <tbody>
@@ -849,7 +849,7 @@
     </tbody>
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-partial data-template="account-email-optins">
     <div class="checkbox email-optin-checkbox">
         <label>
@@ -862,7 +862,7 @@
     {{>account-email-optin-merch}}
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-partial data-template="account-email-optin-news">
 <div class="checkbox email-optin-checkbox">
     <label>
@@ -872,7 +872,7 @@
 </div>
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-partial data-template="account-email-optin-merch">
 <div class="checkbox email-optin-checkbox">
     <label>
@@ -882,7 +882,7 @@
 </div>
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-partial data-template="account-email-optin-events">
 <div class="checkbox email-optin-checkbox">
     <label>
@@ -892,7 +892,7 @@
 </div>
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-template="social-settings"
         data-process="processSocialSettings">
     {{#data}}
@@ -922,7 +922,7 @@
     {{/data}}
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-partial
         data-template="join-gold-discord">
 {{#if hasGoldAccess}}
@@ -944,14 +944,14 @@
 {{/if}}
 </script>
 
-<script type="text/template" data-template="account-return-link" data-partial>
+<script type="text/html" data-template="account-return-link" data-partial>
 <a href="/account" class="button button--cta pull-right button--icon button--icon-left {{class}}">
     <i class="fa fa-chevron-left"></i>
     My Account
 </a>
 </script>
 
-<script type="text/template" data-template="joinDiscordResponse">
+<script type="text/html" data-template="joinDiscordResponse">
 {{#data}}
 <p class="success-box">
 Success please join the following channels with the links below:<br/><br/>
@@ -965,9 +965,9 @@ Success please join the following channels with the links below:<br/><br/>
 {{/data}}
 </script>
 
-<script type="text/template"
+<script type="text/html"
         data-partial data-template="required"><span class="required">*</span></script>
 
-<script type="text/template"
+<script type="text/html"
         data-partial data-template="continueTo">{{#continueTo}}{{#buying}}{{#vendor}}
             a <strong>{{vendor}}</strong> license for <strong>{{identity}}</strong>{{/vendor}}{{#gold}}a <strong><a href="/gold">Gold subscription</a></strong>{{/gold}}{{/buying}}{{#if msg}}{{{msg}}}{{/if}}{{/continueTo}}</script>

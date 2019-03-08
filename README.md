@@ -2,32 +2,18 @@
 
 This is the Monstercat.com website project. Feel free to inspect and contribute.
 
-## About the Stack
+We use vanilla JavaScript with our own tools that we have built in house. Please
+browse the src directory to discover more.
 
-This website uses custom functions that started out as an experimental project
-for our site redesign. You can find more information at `src/js/declare.js`.
+Praise the sun.
 
 ## Quick Start
 
 ```
-npm install
-npm start
+./scripts/build
 ```
 
-## Production Testing
-
-These commands will load in `production.html` instead of `development.html`
-which changes the endpoint and the Stripe public key.
-
-From src folder: `npm start -- production`
-
-From bin folder:  
-```
-npm run build
-npm run serve-prod
-```
-
-Read the package.json for more commands.
+Open the directory in your browser or use a simple web server to host.
 
 ## Contributing
 

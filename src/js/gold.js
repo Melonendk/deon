@@ -32,7 +32,7 @@ function processSubscriptionsPage (args) {
 
   request({
     method: 'POST',
-    url: endpoint + '/self/subscriptions',
+    url: `${endpoint2}/self/manage-subscriptions`,
     withCredentials: true,
     data: getXsollaTokenDefaults()
   }, (err, result) => {
@@ -44,18 +44,15 @@ function processSubscriptionsPage (args) {
     renderContent('subscriptions-page', scope)
 
     scope.loading = false
-    if (!result.legacySubs.length) {
-      scope.xsollaIframeSrc = getXsollaIframeSrc(result.xsollaToken)
-      scope.hasSubscriptions = result.hasActiveSubs
-    }
-    else if (result.legacySubs.length) {
-      scope.legacy = true
-      scope.subscriptions = result.legacySubs
+    scope.legacy = !!result.legacy
+    if (result.legacy) {
+      scope.subscriptions = result.subscriptions
     }
     else {
-      renderError(new Error('An unknown token error occured'))
-      return
+      scope.xsollaIframeSrc = getXsollaIframeSrc(result.token)
+      scope.hasSubscriptions = result.hasActiveSubs
     }
+
     renderContent('subscriptions-page', scope)
     setXsollaIframesLoading()
     pageIsReady({
@@ -82,18 +79,7 @@ function processGoldBuyPage (args) {
 
   renderContent('gold-buy-page', scope)
 
-  const redirectTo = getCookie(COOKIES.GOLD_BUY_REDIRECT_URL)
-  const opts =  {}
-
-  if (redirectTo) {
-    opts.return_url = window.location.origin + redirectTo
-  }
-
-  const so = searchStringToObject()
-
-  if (so.promo) {
-    opts.code = so.promo
-  }
+  const opts = getXsollaTokenOpts()
 
   generateXsollaIframeSrc('gold', opts, (err, result) => {
     if (err) {
@@ -123,6 +109,23 @@ function processGoldBuyPage (args) {
       description: 'Buy Monstercat Gold subscription for downloads, early streaming, shop discounts, and more.'
     })
   })
+}
+
+function getXsollaTokenOpts () {
+  const opts =  {}
+  const redirectTo = getCookie(COOKIES.GOLD_BUY_REDIRECT_URL)
+
+  if (redirectTo) {
+    opts.return_url = window.location.origin + redirectTo
+  }
+
+  const so = searchStringToObject()
+
+  if (so.promo) {
+    opts.code = so.promo
+  }
+
+  return opts
 }
 
 function getXsollaIframeSrc (token) {
@@ -157,17 +160,23 @@ function generateXsollaToken (type, opts, done) {
 
   data = Object.assign(data, opts)
 
-  request({
+  if (generateXsollaToken.cache) {
+    done(null, generateXsollaToken.cache)
+    return
+  }
+
+  requestCached({
     method: 'POST',
     withCredentials: true,
     data: data,
-    url: endpoint + '/xsolla/token/' + type
+    url: endpoint2 + '/xsolla/token/' + type
   }, (err, result) => {
     if (err) {
       done(err)
       return
     }
 
+    generateXsollaToken.cache = result
     done(null, result)
   })
 }
@@ -268,6 +277,12 @@ function processGoldPage (args) {
         description: desc,
         title: 'Monstercat Gold - Downloads, streaming, licenses, discounts'
       })
+
+      //This preloads the token for the user so that if they click Buy the iframe
+      //will load more quickly
+      if (isSignedIn()) {
+        generateXsollaToken('gold', getXsollaTokenOpts(), () => {})
+      }
     }
   })
 }
@@ -291,7 +306,7 @@ function clickCancelLegacySubscription (e) {
   btn.classList.toggle('on')
 
   requestJSON({
-    url: endpoint + '/self/cancel-paypal/' + id,
+    url: endpoint2 + '/self/cancel-paypal/' + id,
     method: 'POST',
     withCredentials: true
   }, function (err, result) {
@@ -329,11 +344,12 @@ function submitUnsubscribeFeedback (e) {
       return errs
     },
     action: function (args) {
-      request({
+      args.data.type = 'gold_unsub_feedback'
+
+      requestWithFormData({
         url: 'https://submit.monstercat.com',
         method: 'POST',
-        cors: true,
-        data: new FormData(args.data)
+        data: args.data
       }, (err, body, xhr) => {
         if (err) {
           err.push(err)
